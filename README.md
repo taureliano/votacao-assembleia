@@ -137,13 +137,15 @@ Os testes automatizados padrão usam H2. A execução em PostgreSQL e o containe
 
 ### Carga (bônus de performance)
 
-Requer k6 instalado e API rodando. Crie uma pauta e abra sessão de 60 minutos, então:
+Requer k6 instalado e a API em execução. Crie uma pauta e abra uma sessão (ex.: 60 minutos) antes de iniciar o teste.
+
+⚠️ **Importante:** Para que o teste de carga registre 100 % de sucesso, a validação de CPF deve estar desativada (`CPF_ENABLED=false` em `application.yml` ou via variável de ambiente). Quando `CPF_ENABLED` estiver `true`, o fallback aleatório gera aproximadamente 50 % de votos rejeitados, refletindo a regra de habilitação de CPF.
 
 ```sh
 k6 run -e PAUTA_ID=<ID> -e VOTERS=100000 -e VUS=50 performance/votos.js
 ```
 
-O teste usa IDs distintos, valida HTTP 204 e registra taxa de erro e p95. Rode em uma pauta nova para cada execução. Use uma segunda instância do teste com IDs controlados se quiser medir conflitos deliberadamente. Os limites do script são metas, não resultados medidos. Faça carga em ambiente isolado; compare H2 e PostgreSQL separadamente e monitore CPU, conexões e I/O. O relatório real deve registrar hardware, banco, concorrência, quantidade, throughput e latências. A integração de CPF deve ser desativada ou apontada para stub durante medição de banco.
+O script utiliza IDs diferentes para cada iteração, valida o retorno HTTP 204 e coleta a taxa de erro e o p95. Execute‑o em uma pauta recém‑criada a cada execução. Caso deseje medir conflitos deliberados, utilize uma segunda instância do teste com IDs controlados. Os limites do script são metas, não resultados medidos. Recomenda‑se executar a carga em ambiente isolado e comparar H2 e PostgreSQL separadamente, monitorando CPU, conexões e I/O. Durante a medição, a integração de CPF deve permanecer desativada ou apontada para um stub.
 
 ## Deploy em nuvem
 
