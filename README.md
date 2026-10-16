@@ -57,8 +57,15 @@ Enquanto a sessão está aberta, os números são parciais. `NAO_ABERTA` indica 
 | GET | `/api/v1/pautas/{id}/sessao` | 200 e sessão |
 | POST | `/api/v1/pautas/{id}/votos` | 204 |
 | GET | `/api/v1/pautas/{id}/resultado` | 200 e contagem |
+### Documentação Swagger UI
+
+A API oferece documentação interativa gerada automaticamente com **Springdoc OpenAPI**.
+- **Swagger UI** está disponível em: `http://localhost:8080/swagger-ui/index.html`
+- **OpenAPI JSON** pode ser obtido em: `http://localhost:8080/v3/api-docs`
+- **OpenAPI YAML** em: `http://localhost:8080/v3/api-docs.yaml`
 
 O arquivo `docs/openapi.json` descreve a API, incluindo o fluxo mobile, e pode ser importado no Swagger Editor ou Postman.
+
 Erros usam `application/problem+json` (Problem Detail). Códigos: 400 entrada inválida; 404 pauta/CPF inexistente; 403 associado não habilitado; 409 sessão ausente/encerrada/reabertura/voto duplicado; 503 validação externa indisponível. Erros inesperados retornam 500 sem expor detalhes internos.
 
 ## Contrato mobile do Anexo 1
