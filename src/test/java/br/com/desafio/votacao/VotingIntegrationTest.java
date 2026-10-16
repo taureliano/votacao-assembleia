@@ -20,7 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(
     properties = {
       "spring.datasource.url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-      "app.callback-base-url=https://mobile.example"
+      "app.callback-base-url=https://mobile.example",
+      "app.cpf.enabled=false"
     })
 @AutoConfigureMockMvc
 class VotingIntegrationTest {

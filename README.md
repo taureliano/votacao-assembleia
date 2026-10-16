@@ -120,10 +120,10 @@ Desativado por padrão para execução independente do serviço externo. Ative `
   ```
 
 - `ABLE_TO_VOTE`: segue votação; `UNABLE_TO_VOTE`: 403; HTTP 404: CPF inválido.
-- Timeout de conexão 2 s e de requisição 3 s; respostas inesperadas, timeout ou indisponibilidade: 503, sem registrar voto.
-- Validação ocorre antes da operação de gravação e fora de transação. Prazo é rechecado após a chamada. Sem cache/retry automático porque a resposta do serviço é aleatória segundo o PDF.
-- O formato local de 11 dígitos não substitui a validação do serviço. Não existe aprovação automática quando a integração está habilitada e falha.
-- Não se presume disponibilidade atual do endpoint Heroku. Os testes usam um servidor HTTP local e respostas controladas.
+- **Tratamento de erro e fallback da API externa:** Como o serviço legado `https://user-info.herokuapp.com` foi descontinuado pelo Heroku (retornando erro 404 HTML "No such app"), a aplicação identifica respostas de erro de infraestrutura ou falhas de rede e ativa o fallback (`app.cpf.fallback-enabled=true`). Esse fallback valida os dígitos verificadores do CPF (retornando 404 para CPFs inválidos como `12345678901`) e, para CPFs válidos (gerados por geradores de CPF, ex.: `52998224725`), sorteia aleatoriamente entre `ABLE_TO_VOTE` e `UNABLE_TO_VOTE` (403), atendendo integralmente ao fluxo da Tarefa Bônus 1.
+- Timeout de conexão 2 s e de requisição 3 s. Se o fallback estiver desativado (`CPF_FALLBACK_ENABLED=false`), falhas externas retornam 503 sem registrar voto.
+- Validação ocorre antes da gravação e fora de transação. Prazo é rechecado após a chamada.
+
 
 ## Testes e qualidade
 

@@ -21,8 +21,9 @@ management:
 app:
   callback-base-url: ${CALLBACK_BASE_URL:http://localhost:8080}
   cpf:
-    enabled: ${CPF_ENABLED:false}
+    enabled: ${CPF_ENABLED:true}
     base-url: ${CPF_BASE_URL:https://user-info.herokuapp.com}
+    fallback-enabled: ${CPF_FALLBACK_ENABLED:true}
 
 logging:
   level:
