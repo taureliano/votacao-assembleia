@@ -103,23 +103,21 @@ Configure `CALLBACK_BASE_URL` para o endereço alcançável pelo aparelho (ex.: 
 
 Desativado por padrão para execução independente do serviço externo. Ative `CPF_ENABLED=true` e envie `cpf` com 11 dígitos. O cliente chama `GET {CPF_BASE_URL}/users/{cpf}` (padrão do enunciado: `https://user-info.herokuapp.com`).
 
-1. Quando CPF_ENABLED=false (Padrão)
-O envio do campo "cpf" é opcional / ignorado.
-A requisição de voto precisa apenas de associadoId e voto:
-json
-{
-  "associadoId": "associado-1",
-  "voto": "SIM"
-}
-Nenhuma chamada externa é disparada.
-2. Quando CPF_ENABLED=true (Habilitado)
-O campo "cpf" torna-se obrigatório (11 dígitos numéricos):
-json
-{
-  "associadoId": "associado-1",
-  "voto": "SIM",
-  "cpf": "12345678901"
-}
+- **Quando `CPF_ENABLED=false` (padrão):** o envio do campo `cpf` é opcional/ignorado e nenhuma chamada externa é disparada. A requisição de voto precisa apenas de `associadoId` e `voto`:
+  ```json
+  {
+    "associadoId": "associado-1",
+    "voto": "SIM"
+  }
+  ```
+- **Quando `CPF_ENABLED=true` (habilitado):** o campo `cpf` torna-se obrigatório (11 dígitos numéricos):
+  ```json
+  {
+    "associadoId": "associado-1",
+    "voto": "SIM",
+    "cpf": "12345678901"
+  }
+  ```
 
 - `ABLE_TO_VOTE`: segue votação; `UNABLE_TO_VOTE`: 403; HTTP 404: CPF inválido.
 - Timeout de conexão 2 s e de requisição 3 s; respostas inesperadas, timeout ou indisponibilidade: 503, sem registrar voto.
@@ -160,21 +158,3 @@ O Dockerfile gera imagem sem privilégios de root, usa `PORT` e expõe `/actuato
 | `CPF_ENABLED` / `CPF_BASE_URL` | Integração opcional |
 
 Para nuvem prefira PostgreSQL gerenciado; H2 em filesystem efêmero não conserva dados após substituição do container. Não mantenha senhas no Git. Configure healthcheck para a porta de `PORT` e caminho `/actuator/health`.
-
-## Publicar no GitHub
-
-O pacote inclui fontes, testes, migrações, documentação, Docker e workflow, sem dados locais ou PDF do processo seletivo. Crie um repositório vazio chamado `votacao-assembleia` na sua conta. No terminal, dentro da pasta do projeto:
-
-```sh
-git init -b main
-git add .
-git commit -m "feat: implementar votação cooperativa e contrato mobile"
-git remote add origin https://github.com/taureliano/votacao-assembleia.git
-git push -u origin main
-```
-
-Se trabalhar no repositório Git já inicializado entregue separadamente, pule `git init`, `git add` e `git commit` e configure somente o remoto/push. A autoria Git deve ser configurada com seu nome e e-mail antes de criar novos commits. Sugestão para próximos commits: `fix: ...`, `test: ...`, `docs: ...`, sempre com mudanças pequenas e mensagens descritivas.
-
-## Roteiro de apresentação
-
-Mostre `mvn verify`, um cadastro e votação via REST, depois o JSON de `/api/v1/mobile`. Explique UNIQUE no banco, timestamp de fechamento, persistência após restart, callbacks configuráveis e as escolhas acima. Comente os limites de contagem síncrona e como mediria performance antes de expandir a arquitetura.
