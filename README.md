@@ -1,6 +1,6 @@
 # Votação Assembleia
 
-API Java 17 / Spring Boot 3.5.6 para cadastrar pautas, abrir sessões, registrar votos e consultar resultados. Inclui o contrato de telas JSON do Anexo 1 (`FORMULARIO` e `SELECAO`). Apenas backend: não há aplicativo mobile.
+API Java 17 / Spring Boot 3.5.6 para cadastrar pautas, abrir sessões, registrar votos e consultar resultados. Apenas backend: não há aplicativo mobile.
 
 ## Executar localmente (Windows, Linux ou macOS)
 
